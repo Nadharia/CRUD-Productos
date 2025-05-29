@@ -1,95 +1,132 @@
-README - API CRUD de Productos con Spring Boot
+README - API REST CRUD de Productos con Spring Boot y MySQL
 Descripción
-Esta es una API REST desarrollada con Spring Boot para gestionar productos almacenados en una base de datos MySQL.
-Incluye paginación, validación, manejo de excepciones personalizadas, y documentación con Swagger/OpenAPI.
+API REST para la gestión de productos, desarrollada con Spring Boot. Permite crear, leer, actualizar y eliminar productos en una base de datos MySQL. Incluye validaciones, manejo centralizado de excepciones personalizadas y documentación automática con Swagger (OpenAPI).
 
-Tecnologías utilizadas
+Tecnologías
 Java 17+
 
-Spring Boot
+Spring Boot 3.x
 
 Spring Data JPA
 
 MySQL
 
+Spring Validation (Jakarta Validation)
+
 Swagger/OpenAPI (springdoc-openapi)
 
 Maven
 
-Jakarta Validation (@Valid)
+Características principales
+CRUD completo para la entidad Producto
 
-Funcionalidades
-Listar productos con paginación
+Paginación para listados (Pageable)
 
-Obtener un producto por su ID
+Validación de entradas con anotaciones (@Valid)
 
-Crear un nuevo producto
+Excepciones personalizadas con mensajes y códigos HTTP
 
-Actualizar un producto existente (búsqueda por nombre)
+Documentación API con Swagger UI para explorar y probar endpoints
 
-Eliminar un producto por ID
+Respuestas uniformes con DTO personalizado (ResponseMessage)
 
-Manejo centralizado de excepciones personalizadas con mensajes y códigos HTTP
+Controlador REST con convenciones RESTful
 
-Documentación API con Swagger UI
-
-Endpoints
-Método	URL	Descripción
-GET	/productos	Listar todos los productos paginados
-GET	/productos/{id}	Obtener un producto por ID
-POST	/productos/crear	Crear un nuevo producto
-PUT	/productos/actualizar	Actualizar un producto (por nombre)
-DELETE	/productos/delete/{id}	Eliminar un producto por ID
-
-Cómo ejecutar el proyecto
-Clona el repositorio:
-
+Estructura del proyecto
 bash
 Copiar
 Editar
-git clone <URL-del-proyecto>
-Configura la conexión a MySQL en application.properties:
+src/main/java/com/crud
+├── controller           # Controladores REST
+├── services            # Lógica de negocio e interfaces
+├── repository          # Interfaces JPA para acceso a datos
+├── model               # Entidades JPA
+├── dto                 # Objetos de transferencia de datos (DTOs)
+├── exception           # Manejo personalizado de excepciones
+└── config              # Configuraciones (Swagger, seguridad, etc)
+Configuración
+Base de datos
+Configura la conexión a MySQL en src/main/resources/application.properties:
 
 properties
 Copiar
 Editar
-spring.datasource.url=jdbc:mysql://localhost:3306/tu_basededatos
+spring.datasource.url=jdbc:mysql://localhost:3306/tu_basededatos?useSSL=false&serverTimezone=UTC
 spring.datasource.username=tu_usuario
 spring.datasource.password=tu_contraseña
 spring.jpa.hibernate.ddl-auto=update
-Ejecuta la aplicación desde tu IDE o con Maven:
-
-bash
-Copiar
-Editar
-mvn spring-boot:run
-Accede a Swagger UI para explorar la API:
+spring.jpa.show-sql=true
+Swagger UI
+La documentación queda disponible en:
 
 bash
 Copiar
 Editar
 http://localhost:8080/swagger-ui.html
-Estructura del proyecto
-controller → Controladores REST
+Endpoints principales
+Verbo HTTP	Ruta	Descripción	Request Body	Respuesta
+GET	/productos	Listar productos paginados	No	Page<Producto>
+GET	/productos/{id}	Obtener producto por ID	No	Producto
+POST	/productos/crear	Crear un nuevo producto	Producto (JSON)	ResponseMessage con mensaje
+PUT	/productos/actualizar	Actualizar producto (por nombre)	Producto (JSON)	ResponseMessage con mensaje
+DELETE	/productos/delete/{id}	Eliminar producto por ID	No	ResponseMessage con mensaje
 
-services → Servicios con la lógica de negocio
+Ejemplo de uso con curl
+Crear un producto:
 
-repository → Interfaces JPA para acceso a datos
+bash
+Copiar
+Editar
+curl -X POST "http://localhost:8080/productos/crear" \
+-H "Content-Type: application/json" \
+-d '{"nombre":"Producto A", "descripcion":"Descripción", "precio":100.0}'
+Actualizar un producto:
 
-model → Entidades JPA
-
-exception → Clases para manejo de excepciones personalizadas
-
-dto → Clases para respuestas personalizadas (ej: ResponseMessage)
-
+bash
+Copiar
+Editar
+curl -X PUT "http://localhost:8080/productos/actualizar" \
+-H "Content-Type: application/json" \
+-d '{"nombre":"Producto A", "descripcion":"Nueva descripción", "precio":150.0}'
 Manejo de excepciones
-Las excepciones personalizadas extienden RuntimeException y tienen un código HTTP asociado para facilitar respuestas coherentes.
-Un @ControllerAdvice global (no incluido aquí) puede capturar estas excepciones y devolver la respuesta adecuada al cliente.
+Se usan excepciones personalizadas (ProductoExcepcion) con mensaje y código HTTP.
 
-Mejoras futuras
+Un @ControllerAdvice global captura estas excepciones y responde con el mensaje y status correspondiente.
 
-Tests unitarios y de integración
+Ejemplos: Producto no encontrado (404), producto existente (409), error interno (500).
+
+Pruebas
+Testing manual
+Usa Swagger UI para probar los endpoints en un entorno gráfico.
+
+También puedes usar herramientas como Postman o Insomnia.
+
+Testing automatizado
+Por implementar (recomendado JUnit 5 + Mockito para pruebas unitarias y MockMvc para integración).
+
+Mejoras y próximas funcionalidades
+Implementar seguridad con Spring Security y JWT
+
+Agregar filtros y ordenamientos en las consultas paginadas
+
+Añadir logging estructurado para auditoría y debugging
+
+Implementar pruebas unitarias e integración continua
+
+Exponer métricas para monitoreo (Spring Actuator)
+
+Cómo contribuir
+Haz fork del repositorio
+
+Crea una rama para tu feature (git checkout -b feature/nueva-funcionalidad)
+
+Realiza tus cambios y commitea (git commit -m "Descripción del cambio")
+
+Haz push a tu fork (git push origin feature/nueva-funcionalidad)
+
+Abre un Pull Request describiendo tus cambios
 
 Contacto
-Para dudas o sugerencias, contacta a:
-Joaco- - joakormr@ejemplo.com
+Joaco — joakormr@gmail.com
+
+

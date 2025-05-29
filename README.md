@@ -111,7 +111,7 @@ curl -X PUT "http://localhost:8080/productos/actualizar" \
 
 ---
 
-## Pruebas
+## Pruebas(POR IMPLEMENTAR)
 
 ### Testing manual
 
@@ -126,11 +126,10 @@ curl -X PUT "http://localhost:8080/productos/actualizar" \
 
 ## Mejoras y próximas funcionalidades
 
-* Implementar seguridad con Spring Security y JWT
-* Agregar filtros y ordenamientos en las consultas paginadas
+
 * Añadir logging estructurado para auditoría y debugging
 * Implementar pruebas unitarias e integración continua
-* Exponer métricas para monitoreo (Spring Actuator)
+
 
 ---
 

@@ -4,6 +4,7 @@ package com.crud.services.imp;
 
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,13 @@ public class ProductoServiceImp implements IProductoService {
 		return productoRepository.findById(id)
 			    .orElseThrow(() -> ProductoExcepcion.PRODUCTO_NOT_FOUND);
 		
+	}
+
+	@Override
+	public List<Producto> findAllProductoByName(String name){
+		List<Producto> listado=productoRepository.findAllByNameContainingIgnoreCase(name);
+		if (listado.isEmpty())throw ProductoExcepcion.NO_EXISTEN_PRODUCTOS;
+		return listado;
 	}
 
 	@Override

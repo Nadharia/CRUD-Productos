@@ -17,7 +17,7 @@ import com.crud.model.Producto;
 public interface ProductoRepository extends JpaRepository<Producto,Long>, JpaSpecificationExecutor<Producto> {
 
 	
-	 List<Producto> findAllByNameContainingIgnoreCase(String nombre);
+
 	Optional<Producto> findByNombre(String nombre);
 
 }

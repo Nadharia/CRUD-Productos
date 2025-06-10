@@ -16,6 +16,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/productos")
 @Tag(name = "Productos", description = "Operaciones con productos")
@@ -78,5 +80,11 @@ public class ProductoController {
 		ResponseMessage response = new ResponseMessage();
 		response.setMensaje(mensaje);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+	}
+
+	@GetMapping("/buscarproducto")
+	public ResponseEntity<List<Producto>> findByPrecioMenor(@RequestParam Double precio){
+		List<Producto> listProductos=iproductoService.findAll(precio);
+		return ResponseEntity.ok(listProductos);
 	}
 }

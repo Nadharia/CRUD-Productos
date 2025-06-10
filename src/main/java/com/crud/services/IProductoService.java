@@ -11,6 +11,9 @@ import org.springframework.data.domain.Pageable;
 import com.crud.model.Producto;
 
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 public interface IProductoService {
 
@@ -26,4 +29,6 @@ Page<Producto> getAllProductos(Pageable pageable);
 String actualizarProducto(Producto producto);
 
 String deleteproducto(Long id);
+
+List<Producto> findAll(Double precio);
 }

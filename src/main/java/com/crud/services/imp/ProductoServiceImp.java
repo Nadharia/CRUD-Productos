@@ -2,6 +2,8 @@ package com.crud.services.imp;
 
 
 
+import com.crud.model.ProductoFiltroDTO;
+import com.crud.repository.ProductoSpecification;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -42,12 +44,7 @@ public class ProductoServiceImp implements IProductoService {
 		
 	}
 
-	@Override
-	public List<Producto> findAllProductoByName(String name){
-		List<Producto> listado=productoRepository.findAllByNameContainingIgnoreCase(name);
-		if (listado.isEmpty())throw ProductoExcepcion.NO_EXISTEN_PRODUCTOS;
-		return listado;
-	}
+
 
 	@Override
 	public String createProducto(Producto producto) {
@@ -87,6 +84,15 @@ public class ProductoServiceImp implements IProductoService {
 		} catch (ProductoExcepcion e) {
 			throw ProductoExcepcion.PROBLEMA_AL_ELIMINAR;
 		}
+	}
+
+	@Override
+	public List<Producto> findAll(Double precio) {
+		ProductoFiltroDTO filtroDTO=new ProductoFiltroDTO();
+		filtroDTO.setPrecioMax(precio);
+		List<Producto>productos= productoRepository.findAll(ProductoSpecification.conFiltros(filtroDTO));
+		if (productos.isEmpty())throw ProductoExcepcion.NO_EXISTEN_PRODUCTOS;
+		return productos;
 	}
 
 }
